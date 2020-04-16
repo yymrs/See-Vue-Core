@@ -1,3 +1,4 @@
+// node的path解析返回路径
 const path = require('path')
 const buble = require('rollup-plugin-buble')
 const alias = require('rollup-plugin-alias')
@@ -5,6 +6,7 @@ const cjs = require('rollup-plugin-commonjs')
 const replace = require('rollup-plugin-replace')
 const node = require('rollup-plugin-node-resolve')
 const flow = require('rollup-plugin-flow-no-whitespace')
+// vue版本号
 const version = process.env.VERSION || require('../package.json').version
 const weexVersion = process.env.WEEX_VERSION || require('../packages/weex-vue-framework/package.json').version
 const featureFlags = require('./feature-flags')
@@ -24,9 +26,11 @@ const weexFactoryPlugin = {
     return '}'
   }
 }
-
+// 引入定义好的路径
 const aliases = require('./alias')
+// 定义一个函数返回路径
 const resolve = p => {
+  // 以/分割成数组拿第0个索引
   const base = p.split('/')[0]
   if (aliases[base]) {
     return path.resolve(aliases[base], p.slice(base.length + 1))
@@ -34,7 +38,7 @@ const resolve = p => {
     return path.resolve(__dirname, '../', p)
   }
 }
-
+// 打包后文件
 const builds = {
   // Runtime only (CommonJS). Used by bundlers e.g. Webpack & Browserify
   'web-runtime-cjs-dev': {
@@ -212,8 +216,18 @@ const builds = {
     external: Object.keys(require('../packages/weex-template-compiler/package.json').dependencies)
   }
 }
-
+// name = web-full-dev
 function genConfig (name) {
+  /*
+    'web-full-dev': {
+      entry: resolve('web/entry-runtime-with-compiler.js'), => src/platforms/web/entry-runtime-with-compiler.js 入口文件
+      dest: resolve('dist/vue.js'), 目标文件
+      format: 'umd',
+      env: 'development',
+      alias: { he: './entity-decoder' },
+      banner
+    },
+  */
   const opts = builds[name]
   const config = {
     input: opts.entry,
@@ -222,6 +236,7 @@ function genConfig (name) {
       flow(),
       alias(Object.assign({}, aliases, opts.alias))
     ].concat(opts.plugins || []),
+    // 输出目标
     output: {
       file: opts.dest,
       format: opts.format,
@@ -254,7 +269,7 @@ function genConfig (name) {
   if (opts.transpile !== false) {
     config.plugins.push(buble())
   }
-
+  // 定义config的'_name'key 不可以枚举
   Object.defineProperty(config, '_name', {
     enumerable: false,
     value: name
@@ -262,8 +277,9 @@ function genConfig (name) {
 
   return config
 }
-
+//在package.json哪里可以看到 process.env.TARGET => web-full-dev
 if (process.env.TARGET) {
+  // 返回一个config对象
   module.exports = genConfig(process.env.TARGET)
 } else {
   exports.getBuild = genConfig

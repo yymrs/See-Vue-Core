@@ -4,8 +4,9 @@ import { renderMixin } from './render'
 import { eventsMixin } from './events'
 import { lifecycleMixin } from './lifecycle'
 import { warn } from '../util/index'
-
+// 定义一个构造函数
 function Vue (options) {
+  // 如果不是生产环境并且this不是Vue的实例给一个警告
   if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue)
   ) {

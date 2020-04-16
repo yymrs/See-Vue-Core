@@ -1,5 +1,5 @@
 /* @flow */
-
+// 在/src/core 是Vue核心源码
 import Vue from 'core/index'
 import config from 'core/config'
 import { extend, noop } from 'shared/util'

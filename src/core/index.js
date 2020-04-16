@@ -1,10 +1,12 @@
+// 引入 ./instance/index 
 import Vue from './instance/index'
 import { initGlobalAPI } from './global-api/index'
 import { isServerRendering } from 'core/util/env'
 import { FunctionalRenderContext } from 'core/vdom/create-functional-component'
 
+// 初始化全局API
 initGlobalAPI(Vue)
-
+// 给Vue的原型里面添加一个只读属性：$isServer,$ssrContext，
 Object.defineProperty(Vue.prototype, '$isServer', {
   get: isServerRendering
 })

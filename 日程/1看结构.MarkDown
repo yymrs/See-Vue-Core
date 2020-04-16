@@ -1,0 +1,19 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-04-16 14:22:19
+ * @LastEditTime: 2020-04-16 17:19:08
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \See-Vue-Core\日程\1看结构.MarkDown
+ -->
+## 运行
+在package.json里面找到运行命令，来看vue执行哪些文件；
+<!-- 
+    rollup=>模块打包工具 
+    scripts/config.js 执行的js文件。    
+-->
+npm run dev:"dev": "rollup -w -c scripts/config.js --environment TARGET:web-full-dev",
+1:[scripts/config.js里面是什么](../scripts/config.js) 
+<!-- 这个文件引入vue实例 然后重写了vue的挂载方法mount  -->
+[在这个js里面找到了入口文件](../src/platforms/web/entry-runtime-with-compiler.js)
+2:[找到vue核心源码入口在](../src/core/index.js)

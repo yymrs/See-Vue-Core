@@ -11,8 +11,9 @@ import { initProvide, initInjections } from './inject'
 import { extend, mergeOptions, formatComponentName } from '../util/index'
 
 let uid = 0
-
+// Vue 是个类，
 export function initMixin (Vue: Class<Component>) {
+  // Vue 原型添加一个_init方法
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid

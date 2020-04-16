@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-04-16 11:16:19
+ * @LastEditTime: 2020-04-16 14:58:47
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \See-Vue-Core\scripts\alias.js
+ */
 const path = require('path')
 
 const resolve = p => path.resolve(__dirname, '../', p)
