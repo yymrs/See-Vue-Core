@@ -47,7 +47,9 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 
 export function initState (vm: Component) {
   vm._watchers = []
+  // 拿到实例的选项
   const opts = vm.$options
+  // 有props ，methods，data，computed，watch就初始化
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
@@ -130,6 +132,7 @@ function initData (vm: Component) {
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
+      // hasOwn(methods,key) 判断这个对象里面有没有这个key
       if (methods && hasOwn(methods, key)) {
         warn(
           `Method "${key}" has already been defined as a data property.`,
@@ -270,6 +273,7 @@ function initMethods (vm: Component, methods: Object) {
           vm
         )
       }
+      // props 并且props里面有methods里面的key 
       if (props && hasOwn(props, key)) {
         warn(
           `Method "${key}" has already been defined as a prop.`,
@@ -283,6 +287,13 @@ function initMethods (vm: Component, methods: Object) {
         )
       }
     }
+    /*
+    bind:
+      function nativeBind (fn: Function, ctx: Object): Function {
+        return fn.bind(ctx)
+      }
+      bind(methods[key], vm) => 执行methods[key]方法的this是vm
+    */
     vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
   }
 }
@@ -322,6 +333,7 @@ export function stateMixin (Vue: Class<Component>) {
   // the object here.
   const dataDef = {}
   dataDef.get = function () { return this._data }
+  // debugger
   const propsDef = {}
   propsDef.get = function () { return this._props }
   if (process.env.NODE_ENV !== 'production') {

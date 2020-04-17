@@ -13,12 +13,12 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 let uid = 0
 // Vue 是个类，
 export function initMixin (Vue: Class<Component>) {
-  // Vue 原型添加一个_init方法
+  // initMixin函数为Vue原型添加一个_init方法
   Vue.prototype._init = function (options?: Object) {
+    // this 就是Vue的实例
     const vm: Component = this
     // a uid
     vm._uid = uid++
-
     let startTag, endTag
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -36,7 +36,10 @@ export function initMixin (Vue: Class<Component>) {
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
+      // vm.constructor 就是Vue构造函数
+      // mergeOptions()首先格式化了props，Inject，directives最后返回了一个对象
       vm.$options = mergeOptions(
+        // resolveConstructorOptions (vue构造函数，实例化的对象的参数||空对象，当前实例)
         resolveConstructorOptions(vm.constructor),
         options || {},
         vm
@@ -48,15 +51,23 @@ export function initMixin (Vue: Class<Component>) {
     } else {
       vm._renderProxy = vm
     }
+    // debugger
     // expose real self
     vm._self = vm
+    // 初始化生命周期
     initLifecycle(vm)
+    // 初始化事件
     initEvents(vm)
+    // 初始化render
     initRender(vm)
+    // 调用钩子函数beforeCreate，此时还没有初始化state，data/props还不能调用
     callHook(vm, 'beforeCreate')
+    // data/props 初始化注入
     initInjections(vm) // resolve injections before data/props
+    // 对data/props等属性进行初始化和检验
     initState(vm)
     initProvide(vm) // resolve provide after data/props
+    // 调用钩子函数created，此时可以调用data/props了
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -65,7 +76,7 @@ export function initMixin (Vue: Class<Component>) {
       mark(endTag)
       measure(`vue ${vm._name} init`, startTag, endTag)
     }
-
+    // 如果实例化Vue时指明了el，则进行挂载
     if (vm.$options.el) {
       vm.$mount(vm.$options.el)
     }
@@ -90,8 +101,9 @@ export function initInternalComponent (vm: Component, options: InternalComponent
     opts.staticRenderFns = options.staticRenderFns
   }
 }
-
+// 参数是个类 结果返回的是参数的options属性
 export function resolveConstructorOptions (Ctor: Class<Component>) {
+  // debugger
   let options = Ctor.options
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)

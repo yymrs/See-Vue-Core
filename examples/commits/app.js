@@ -51,6 +51,9 @@ new Vue({
         }
         xhr.send()
       }
+    },
+    test(){
+      console.log('click event');
     }
   }
 })

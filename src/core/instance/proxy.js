@@ -33,7 +33,11 @@ if (process.env.NODE_ENV !== 'production') {
       target
     )
   }
-
+/**
+ * export function isNative (Ctor: any): boolean {
+    return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
+  }
+ */
   const hasProxy =
     typeof Proxy !== 'undefined' && isNative(Proxy)
 

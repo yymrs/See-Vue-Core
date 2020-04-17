@@ -28,10 +28,10 @@ export function setActiveInstance(vm: Component) {
     activeInstance = prevActiveInstance
   }
 }
-
+// 初始化声明周期
 export function initLifecycle (vm: Component) {
   const options = vm.$options
-
+  // 找到第一个非抽象父组件
   // locate first non-abstract parent
   let parent = options.parent
   if (parent && !options.abstract) {
@@ -46,7 +46,7 @@ export function initLifecycle (vm: Component) {
 
   vm.$children = []
   vm.$refs = {}
-
+//初始化声明周期的标识flag值
   vm._watcher = null
   vm._inactive = null
   vm._directInactive = false

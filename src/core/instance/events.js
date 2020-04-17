@@ -9,12 +9,17 @@ import {
 } from '../util/index'
 import { updateListeners } from '../vdom/helpers/index'
 
+// 初始化事件
 export function initEvents (vm: Component) {
+  // 创建一个空对象
+  // vm是Vue构造函数的实例
   vm._events = Object.create(null)
   vm._hasHookEvent = false
+  //初始化父组件捕获的事件，_parentListeners其实是父组件模板中写的v-on
   // init parent attached events
   const listeners = vm.$options._parentListeners
   if (listeners) {
+    //将父组件模板中注册的事件,放到当前组件实例的listeners里面
     updateComponentListeners(vm, listeners)
   }
 }

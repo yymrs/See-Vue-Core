@@ -295,16 +295,21 @@ export function validateComponentName (name: string) {
  * Ensure all props option syntax are normalized into the
  * Object-based format.
  */
+// 参数对象，或者一个组件
 function normalizeProps (options: Object, vm: ?Component) {
+  // options是我们实例化的对象
   const props = options.props
+  // 没有props直接返回了，有的话就格式化props
   if (!props) return
   const res = {}
   let i, val, name
+  // props是不是数组的格式
   if (Array.isArray(props)) {
     i = props.length
     while (i--) {
       val = props[i]
       if (typeof val === 'string') {
+        // camelize()函数返回一个
         name = camelize(val)
         res[name] = { type: null }
       } else if (process.env.NODE_ENV !== 'production') {
@@ -397,7 +402,7 @@ export function mergeOptions (
   if (typeof child === 'function') {
     child = child.options
   }
-
+  // 初始化props的类型
   normalizeProps(child, vm)
   normalizeInject(child, vm)
   normalizeDirectives(child)

@@ -14,7 +14,7 @@ function Vue (options) {
   }
   this._init(options)
 }
-
+// init对Vue实例进行属性的初始化
 initMixin(Vue)
 stateMixin(Vue)
 eventsMixin(Vue)
