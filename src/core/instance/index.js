@@ -17,6 +17,7 @@ function Vue (options) {
 // init对Vue实例进行属性的初始化
 initMixin(Vue)
 stateMixin(Vue)
+// 对事件绑定的注入
 eventsMixin(Vue)
 lifecycleMixin(Vue)
 renderMixin(Vue)
