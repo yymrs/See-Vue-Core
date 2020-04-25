@@ -15,7 +15,11 @@ new Vue({
     currentBranch: 'master',
     commits: null
   },
-
+  beforeCreate(){
+    console.log(this.branches);
+    console.log(this);
+  },
+  props:['Dd'],
   created: function () {
     this.fetchData()
   },

@@ -26,6 +26,7 @@ import {
  * how to merge a parent option value and a child option
  * value into the final value.
  */
+// 创建一个空对象
 const strats = config.optionMergeStrategies
 
 /**
@@ -309,7 +310,7 @@ function normalizeProps (options: Object, vm: ?Component) {
     while (i--) {
       val = props[i]
       if (typeof val === 'string') {
-        // camelize()函数返回一个
+        // camelize()函数返回一个string
         name = camelize(val)
         res[name] = { type: null }
       } else if (process.env.NODE_ENV !== 'production') {
@@ -402,9 +403,12 @@ export function mergeOptions (
   if (typeof child === 'function') {
     child = child.options
   }
-  // 初始化props的类型
+  // child就是实例的参数
+  // 初始化props把类型设置为null
   normalizeProps(child, vm)
+  // 初始化注入
   normalizeInject(child, vm)
+  // 初始化指令
   normalizeDirectives(child)
 
   // Apply extends and mixins on the child options,
@@ -434,7 +438,7 @@ export function mergeOptions (
   }
   function mergeField (key) {
     const strat = strats[key] || defaultStrat
-    options[key] = strat(parent[key], child[key], vm, key)
+      options[key] = strat(parent[key], child[key], vm, key)
   }
   return options
 }

@@ -23,7 +23,7 @@
   </head>
   <body>
     <div id="demo">
-      <h1 @click='test'>Latest Vue.js Commits</h1>
+      <h1 v-on:click='test'>Latest Vue.js Commits</h1>
       <template v-for="branch in branches">
         <input type="radio"
           :id="branch"

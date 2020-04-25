@@ -15,7 +15,10 @@ let uid = 0
 export function initMixin (Vue: Class<Component>) {
   // initMixin函数为Vue原型添加一个_init方法
   Vue.prototype._init = function (options?: Object) {
-    // this 就是Vue的实例
+    // this 就是Vue的实例,options是new Vue()的参数
+    // console.log(options,this);
+    // console.log(this instanceof Vue);
+    // console.log(this.constructor);
     const vm: Component = this
     // a uid
     vm._uid = uid++
@@ -38,6 +41,20 @@ export function initMixin (Vue: Class<Component>) {
     } else {
       // vm.constructor 就是Vue构造函数
       // mergeOptions()首先格式化了props，Inject，directives最后返回了一个对象
+      /** 例如:
+       * components: {}
+        created: [ƒ]
+        data: ƒ mergedInstanceDataFn()
+        directives: {}
+        el: "#demo"
+        filters: {truncate: ƒ, formatDate: ƒ}
+        methods: {fetchData: ƒ, test: ƒ}
+        props: {Dd: {…}}
+        watch: {currentBranch: "fetchData"}
+        _base: ƒ Vue(options)
+        __proto__: Object
+      */  
+      //  把生成实例的参数放到实例的$options属性上面
       vm.$options = mergeOptions(
         // resolveConstructorOptions (vue构造函数，实例化的对象的参数||空对象，当前实例)
         resolveConstructorOptions(vm.constructor),
@@ -47,6 +64,7 @@ export function initMixin (Vue: Class<Component>) {
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
+      // 代理 实例的option属性
       initProxy(vm)
     } else {
       vm._renderProxy = vm
@@ -60,14 +78,14 @@ export function initMixin (Vue: Class<Component>) {
     initEvents(vm)
     // 初始化render
     initRender(vm)
-    // 调用钩子函数beforeCreate，此时还没有初始化state，data/props还不能调用
+    // 调用钩子函数beforeCreate，此时还没有初始化state，data/props/methods还不能调用
     callHook(vm, 'beforeCreate')
-    // data/props 初始化注入
+    // 在初始化data/props之前 
     initInjections(vm) // resolve injections before data/props
     // 对data/props等属性进行初始化和检验
     initState(vm)
     initProvide(vm) // resolve provide after data/props
-    // 调用钩子函数created，此时可以调用data/props了
+    // 调用钩子函数created，此时可以调用data/props等属性了
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -103,7 +121,6 @@ export function initInternalComponent (vm: Component, options: InternalComponent
 }
 // 参数是个类 结果返回的是参数的options属性
 export function resolveConstructorOptions (Ctor: Class<Component>) {
-  // debugger
   let options = Ctor.options
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)

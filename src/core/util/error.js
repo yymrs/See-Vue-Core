@@ -42,6 +42,7 @@ export function invokeWithErrorHandling (
 ) {
   let res
   try {
+    // args是null handler.call(context) context是当前实例 也就是当前实例来执行这个函数
     res = args ? handler.apply(context, args) : handler.call(context)
     if (res && !res._isVue && isPromise(res) && !res._handled) {
       res.catch(e => handleError(e, vm, info + ` (Promise/async)`))

@@ -343,8 +343,10 @@ export function callHook (vm: Component, hook: string) {
       invokeWithErrorHandling(handlers[i], vm, null, vm, info)
     }
   }
+  // 是否有event事件有的话emit
   if (vm._hasHookEvent) {
     vm.$emit('hook:' + hook)
   }
+  // 把事件移除算是执行结束
   popTarget()
 }
